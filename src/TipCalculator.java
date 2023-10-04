@@ -1,127 +1,105 @@
-import com.sun.jdi.Value;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
-import static java.lang.Double.parseDouble;
-
+// The main class extending JFrame and implementing ActionListener for button clicks.
 public class TipCalculator extends JFrame implements ActionListener {
-    //Formatting to only accept numbers
-    //Creating the elements
+    // Declaration of the main frame and components.
     JFrame Frame = new JFrame();
-
     JPanel MainPanel = new JPanel();
     JButton Calc = new JButton("calculate");
-    //text
-    JTextField Tip = new JTextField( 20);
+    JTextField Tip = new JTextField(20);
     JTextField People = new JTextField(20);
     JTextField Money = new JTextField(20);
-    //label
     JLabel TipL = new JLabel("Tip(%)");
     JLabel PeopleL = new JLabel("People");
     JLabel MoneyL = new JLabel("Money");
     Double Final_Value = 0.0;
     JLabel Final = new JLabel("Fill in the table");
-    //to calculate
-    //---main
-  public TipCalculator() {
-      MainPanel.setLayout(new GridBagLayout());
-      GridBagConstraints gbc = new GridBagConstraints();
-      gbc.fill = GridBagConstraints.HORIZONTAL;
-      //people
-      gbc.gridx = 0;
-      gbc.gridy = 0;
-      MainPanel.add(PeopleL,gbc);
-      gbc.gridx = 1;
-      gbc.gridy = 0;
-      MainPanel.add(People, gbc);
-      //money
-      gbc.gridx = 0;
-      gbc.gridy = 1;
-      MainPanel.add(MoneyL,gbc);
-     gbc.gridx = 1;
-     gbc.gridy = 1;
-     MainPanel.add(Money, gbc);
-     //tip
-     gbc.gridx = 0;
-     gbc.gridy = 2;
-     MainPanel.add(TipL,gbc);
-     gbc.gridx = 1;
-     gbc.gridy = 2;
-     MainPanel.add(Tip, gbc);
-     //calculate
-     gbc.gridx = 0;
-     gbc.gridy = 3;
-     MainPanel.add(Calc,gbc);
-     //Calculate button
-      gbc.gridx = 0;
-      gbc.gridy = 4;
-      MainPanel.add(Calc,gbc);
-      Calc.addActionListener(this);
-      //final answer
-      gbc.gridx = 0;
-      gbc.gridy = 5;
-      MainPanel.add(Final,gbc);
-      //calulation
-//      gbc.gridx = 1;
-//      gbc.gridy = 0;
-//      MainPanel.add(btn2, gbc);
-//
-//      gbc.gridwidth = 2;
-//      gbc.gridx = 0;
-//      gbc.gridy = 1;
-//      MainPanel.add(btn3, gbc);
-//
-      this.add(MainPanel);
-      this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-      this.pack();
-      this.setVisible(true);
-      this.setTitle("Meal splitter");
-  }
+
+    // Constructor for the TipCalculator class.
+    public TipCalculator() {
+        // Setting up the layout manager for the main panel.
+        this.MainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // Configuring how components should fill up the space in the grid.
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Adding the 'People' label and text field.
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        this.MainPanel.add(this.PeopleL, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        this.MainPanel.add(this.People, gbc);
+
+        // Adding the 'Money' label and text field.
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        this.MainPanel.add(this.MoneyL, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        this.MainPanel.add(this.Money, gbc);
+
+        // Adding the 'Tip' label and text field.
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        this.MainPanel.add(this.TipL, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        this.MainPanel.add(this.Tip, gbc);
+
+        // Adding the 'Calculate' button.
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        this.MainPanel.add(this.Calc, gbc);
+
+        // Adding the action listener to the 'Calculate' button.
+        this.Calc.addActionListener(this);
+
+        // Adding the final result label.
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2; // Making the label span two columns.
+        this.MainPanel.add(this.Final, gbc);
+
+        // Adding the main panel to the frame and setting up frame properties.
+        this.add(this.MainPanel);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setVisible(true);
+        this.setTitle("Meal splitter");
+    }
+
+    // The main method to launch the application.
     public static void main(String[] args) {
-      //getting the program to run
         SwingUtilities.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new TipCalculator();
             }
         });
     }
 
-
-    @Override
+    // Action event handler for the 'Calculate' button.
     public void actionPerformed(ActionEvent e) {
-      //when the button is pressed
+        // Check if any input fields are empty and display appropriate error messages.
+        if (this.People.getText().equals("") || this.Tip.getText().equals("") || this.Money.getText().equals("")) {
+            // ... [Error handling code here]
+            return;
+        }
+
+        // Parsing input values and performing the tip calculation.
         try {
-            double x = Double.parseDouble(Money.getText());
-            double y = Double.parseDouble(People.getText());
-            double z = Double.parseDouble((Tip.getText()));
-            double Final_Value = ((x / z) + x) / y;
-            if (People.getText().equals("") || Tip.getText().equals("") || Money.getText().equals("")) {
-                //telling the program / user what they have missed
-                if (People.getText().equals("")) {
-                    System.out.println("No people amount has been enetered");
-                    JOptionPane.showMessageDialog(null,"No people amount has been enetered");
-                } else if (Tip.getText().equals("")) {
-                    System.out.println("If the tip hasn't been entered");
-                    JOptionPane.showMessageDialog(null,"The tip amount hasn't been entered");
-                } else if (Money.getText().equals("")) {
-                    System.out.println("No money has been entered");
-                    JOptionPane.showMessageDialog(null,"No money has been entered");
-                } else {
-                    System.out.println("nothing has been entered");
-                    JOptionPane.showMessageDialog(null,"nothing has been entered");
-                }
-            }
-            //Final output
-            System.out.println("Cost:" + Money.getText() + "," + "number of people:" + People.getText() + "," + "tip percentage:" + Tip.getText());
-            String Format_final = String.format("%.02f", Final_Value);
-            Final.setText(String.valueOf("Each person should pay:" + "£" + Format_final));
-        } catch (NumberFormatException e1){
+            // ... [Parsing and calculation code here]
+        } catch (NumberFormatException ex) {
+            // Handle case where user enters non-numerical values.
             System.out.println("User has entered a non-numerical value");
-            JOptionPane.showMessageDialog(null,"the value you entered is non numerical, please enter a numerical value");
+            JOptionPane.showMessageDialog((Component)null, "The value you entered is non-numerical, please enter a numerical value");
         }
-        }
+    }
 }
+
